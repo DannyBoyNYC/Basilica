@@ -12,15 +12,11 @@
   - [Flex Layout](#flex-layout)
   - [The Branding Header](#the-branding-header)
     - [Custom Fonts](#custom-fonts)
+  - [CSS Nesting](#css-nesting)
     - [Header: Responsive Design](#header-responsive-design)
-  - [Navigation](#navigation)
+  - [The Navigation](#the-navigation)
     - [Nav Links and Gradients](#nav-links-and-gradients)
   - [CSS Grid](#css-grid)
-  - [Sass](#sass)
-    - [SASS Variables](#sass-variables)
-    - [SASS Nesting](#sass-nesting)
-    - [SASS Partials](#sass-partials)
-    - [A Note on Refactoring](#a-note-on-refactoring)
   - [JavaScript](#javascript)
     - [Aside: Demo Arrays in Node](#aside-demo-arrays-in-node)
     - [Add a Script](#add-a-script)
@@ -30,6 +26,7 @@
     - [Add Another Close Method](#add-another-close-method)
     - [Adding Animation to the Modal](#adding-animation-to-the-modal)
   - [A Dynamic Popover](#a-dynamic-popover)
+  - [END of Exercise](#end-of-exercise)
   - [Notes](#notes)
   - [Expressions](#expressions)
   - [Statements](#statements)
@@ -221,13 +218,13 @@ Examine image use in a typical [NY Times article](https://www.nytimes.com/2023/0
 />
 ```
 
-Note the width and heigth attributes to prevent layout shift.
+Note the width and height attributes to prevent layout shift.
 
 Replace the `img` tag in `index.html` with:
 
 ```html
 <img
-  alt="a bold of pesto with a wooden spoon in it"
+  alt="a bowl of pesto with a wooden spoon in it"
   src="img/pesto.jpg"
   srcset="
     img/pesto/pesto_iodywc_c_scale,w_380.jpg   600w,
@@ -342,12 +339,7 @@ Use a background color and box-shadow to color the aside:
 
 ```css
 @media (width > 640px) {
-  .content {
-    display: flex;
-  }
-  article {
-    flex: 1 0 60%;
-  }
+  /* ommited for brevity */
   aside {
     background: var(--light-green);
     box-shadow: -4px 0px 4px #ddd;
@@ -421,7 +413,7 @@ header h1 {
 }
 ```
 
-Note: `font-weight: normal;` is necessary here because by default header tags are bold and we do not have a bold version of the font available.
+Note: `font-weight: normal;` is nice to have here because by default header tags are bold and we do not have a bold version of the futura font available.
 
 Try: temporarily remove `no-repeat` from the `background` property and setting the height of the `<h1>` to 600px.
 
@@ -431,9 +423,9 @@ Since background images fill the background of their container we can begin by m
 
 ```css
 header h1 {
+  /* omitted */
   padding-left: 260px;
   padding-top: 90px;
-  ...;
 }
 ```
 
@@ -443,12 +435,12 @@ Use transform to tweak the positioning:
 
 ```css
 header h1 {
+  /* omitted */
   transform: translate(-100px, -80px);
-  ...;
 }
 ```
 
-Note: [transforms](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Transforms) are an important property, especially when it comes to creating animations.
+Note: [transforms](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Transforms) are a useful property, especially when it comes to creating animations.
 
 ## CSS Nesting
 
@@ -499,16 +491,36 @@ header a.beta {
 }
 ```
 
+We can use flex in order to align the text vertically and horizontally:
+
+```css
+header a.beta {
+  background: url("img/burst.svg") no-repeat;
+  color: #fff;
+  font-size: 1.5rem;
+  position: absolute;
+  top: -20px;
+  right: 10px;
+  width: 85px;
+  height: 85px;
+  /* line-height: 85px; */
+  /* text-align: center; */
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+```
+
 Note:
 
 - the use of `img/burst.svg` for the background image. Examine it in the editor.
-- the use of line-height to set the leading to the same height as the containing element. This allows the text to vertically center.
 - the use of position absolute. We will give this element a positioning context by applying position absolute to its containing element:
 
 ```css
 header {
+  /* omitted */
   position: relative;
-  ...;
 }
 ```
 
@@ -516,9 +528,9 @@ Add a hover, transform and animate:
 
 ```css
 header a.beta {
+  /* omitted */
   transform: rotate(20deg);
   transition: all 1s ease;
-  ...;
 }
 ```
 
@@ -538,7 +550,6 @@ header {
   background: var(--basil-green);
   border-radius: 8px 8px 0px 0px;
   position: relative;
-
   h1 {
     background: url(img/basil.png) no-repeat;
     font-family: futura_stdlight, sans-serif;
@@ -558,17 +569,20 @@ header {
     right: 10px;
     width: 85px;
     height: 85px;
-    line-height: 85px;
-    text-align: center;
     text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     transform: rotate(20deg);
     transition: all 1s ease;
-  }
-  a.beta:hover {
-    transform: rotate(0deg) scale(1.2);
+    &:hover {
+      transform: rotate(0deg) scale(1.2);
+    }
   }
 }
 ```
+
+Note the use of the ampersand (&) for the nested hover.
 
 ### Header: Responsive Design
 
@@ -578,7 +592,7 @@ We will attempt a mobile first design strategy. Edit the css to display for smal
 
 ```css
 header {
-  ...
+  /* omitted */
   h1 {
     background: url(img/basil.png) no-repeat;
     font-family: futura_stdlight, sans-serif;
@@ -591,26 +605,27 @@ header {
 And add features for the large screen within the media query:
 
 ```css
-@media (min-width: 640px) {
-  header h1 {
-    padding-left: 240px;
-    padding-top: 90px;
-    transform: translate(-100px, -80px);
-    background-position: top left;
+header {
+  /* omitted */
+  h1 {
+    background: url(img/basil.png) no-repeat;
+    font-family: futura_stdlight, sans-serif;
+    font-weight: normal;
+    color: #fff;
+    font-size: 5rem;
+    @media (width > 640px) {
+      padding-left: 240px;
+      padding-top: 90px;
+      transform: translate(-100px, -80px);
+      background-position: top left;
+    }
   }
-  /* ...; */
 }
-```
-
-We can also nest our media queries:
-
-```css
-
 ```
 
 Additional tweaks for the small screen:
 
-- Remove the body margin top (and adding it back for the wide screen):
+- Remove the body margin top:
 
 ```css
 body {
@@ -624,41 +639,41 @@ body {
 }
 ```
 
+and add it back for the wide screen:
+
 ```css
 @media (min-width: 640px) {
-  body {
-    margin: 0 auto;
-    margin-top: 24px;
-  }
-  /* ...; */
+  margin: 0 auto;
+  margin-top: 24px;
 }
 ```
 
-- Removing the rounded corners on small screen:
+- Remove the rounded corners on small screen:
 
 ```css
 header {
-  position: relative;
-  height: 120px;
-  background: var(--basil-green);
+  /* omitted */
   /* border-radius: 8px 8px 0px 0px; */
 }
 ```
 
-Add it back on wide screens:
+add them back to wide screens:
 
 ```css
-@media (min-width: 640px) {
-  header {
+header {
+  height: 120px;
+  background: var(--basil-green);
+  /* border-radius: 8px 8px 0px 0px; */
+  position: relative;
+  @media (width > 640px) {
     border-radius: 8px 8px 0px 0px;
   }
-  /* ...; */
-}
+  /* omitted */
 ```
 
 Always remember: there is no hover in touch screen devices. Use the Device Toggle in the developer tools set to a mobile viewport and tap on the burst.
 
-## Navigation
+## The Navigation
 
 Add the code below:
 
@@ -669,20 +684,19 @@ nav {
   padding: 0.5rem;
   display: flex;
   align-items: center;
-}
 
-nav ul {
-  display: flex;
-  gap: 1rem;
-}
+  ul {
+    display: flex;
+    gap: 1rem;
+  }
 
-nav li {
-  list-style: none;
-  /* margin-right: 0.5rem; */
-}
-
-nav p {
-  margin-right: auto;
+  li {
+    list-style: none;
+    /* margin-right: 0.5rem; */
+  }
+  p {
+    margin-right: auto;
+  }
 }
 ```
 
@@ -698,11 +712,11 @@ Remove it and add `justify-content` to the flex parent:
 nav {
   justify-content: space-between;
   flex-wrap: wrap;
-  /* ...; */
-}
-/* nav p {
+
+  /* p {
   margin-right: auto; 
 } */
+}
 ```
 
 Note: the flex-wrap property allows the paragraph to stack on small screens.
@@ -710,13 +724,16 @@ Note: the flex-wrap property allows the paragraph to stack on small screens.
 ### Nav Links and Gradients
 
 ```css
-nav a {
-  text-align: center;
-  font-size: 1.5rem;
-  padding: 8px;
-  color: #fff;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-  border-radius: 6px;
+nav {
+  /* omitted */
+  a {
+    text-align: center;
+    font-size: 1.5rem;
+    padding: 8px;
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+  }
 }
 ```
 
@@ -751,18 +768,27 @@ The [gradients](http://www.colorzilla.com/gradient-editor/) for the buttons:
 The red color we've chosen for hovers is not visually pleasant here. We will use the CSS pseudo-class [`:not`](https://developer.mozilla.org/en-US/docs/Web/CSS/:not) to exclude the links in the nav bar:
 
 ```css
-a:hover :not(nav) {
-  color: var(--red);
+nav {
+  /* omitted */
+  a {
+    /* omitted */
+    &:hover {
+      color: white;
+    }
+  }
 }
 ```
 
 Make all the buttons the same width. Try with and without the `inline-block`.
 
 ```css
-nav a {
-  min-width: 120px;
-  display: inline-block;
-  /* ...; */
+nav {
+  /* omitted */
+  a {
+    /* omitted */
+    min-width: 120px;
+    display: inline-block;
+  }
 }
 ```
 
@@ -772,16 +798,16 @@ Note: this is a setting which will likely need to be changed to accomodate small
 
 CSS Tricks offers a [guide to CSS grid](https://css-tricks.com/snippets/css/complete-guide-grid/).
 
-Flexbox operates in a [single dimension](https://hackernoon.com/the-ultimate-css-battle-grid-vs-flexbox-d40da0449faf): x or y. CSS Grid operates on both the x _and_ y axis.
+Flexbox operates in a [single dimension](https://css-tricks.com/snippets/css/a-guide-to-flexbox/) using the `flex-direction` property: x or y. CSS Grid operates on both the x _and_ y axis.
 
-Our current use of Flexbox to style the content columns operates in a single (horizontal or x) dimension so flex is a viable option.
+Our current use of Flexbox to style the content columns operates in a single (horizontal or x) dimension so flex is really all we need for this layout.
 
-Nevertheless, we will use CSS Grid for the primary layout in order to introduce some of its features in this simple use case.
+Nevertheless, we will use CSS Grid for the layout in order to introduce some of its features in a simple use case.
 
 Remove the flex statements and use a grid display, define columns, and set the start and end points for the grid children:
 
 ```css
-@media (min-width: 640px) {
+@media (width > 640px) {
   .content {
     /* display: flex; */
     display: grid;
@@ -798,7 +824,6 @@ Remove the flex statements and use a grid display, define columns, and set the s
     background: var(--light-green);
     box-shadow: -4px 0px 4px #ddd;
   }
-  /* ...; */
 }
 ```
 
@@ -813,10 +838,8 @@ Or using shorthand:
 By moving the `display: grid` setting to the body selector, we can use [grid areas](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas) to define our layout:
 
 ```css
-@media (min-width: 600px) {
+@media (width > 600px) {
   body {
-    margin: 0 auto;
-    margin-top: 1.5rem;
     display: grid;
     grid-template-areas:
       "header"
@@ -825,14 +848,7 @@ By moving the `display: grid` setting to the body selector, we can use [grid are
       "footer";
   }
   header {
-    border-radius: 8px 8px 0px 0px;
     grid-area: header;
-  }
-  header h1 {
-    padding-left: 240px;
-    padding-top: 90px;
-    transform: translate(-100px, -80px);
-    background-position: top left;
   }
   nav {
     grid-area: nav;
@@ -857,7 +873,7 @@ By moving the `display: grid` setting to the body selector, we can use [grid are
 }
 ```
 
-Demo: with grid areas it become easy to reassign different sections of the page.
+Demo: with grid areas it becomes easy to reassign different sections of the page.
 
 ```css
 header {
@@ -865,528 +881,7 @@ header {
 }
 ```
 
-## Sass
-
-[Sass](https://sass-lang.com/) extends CSS by adding handy features to it. It is still used widely but native browser supported CSS is slowly incorporating Sass features. Five years ago CSS variables did not exist. The only way to use variables was to use Sass.
-
-Sass is a superset of CSS, which means all valid CSS is also valid SCSS. CSS is a subset of Sass.
-
-Earlier we used NPM to install [Sass](https://www.npmjs.com/package/sass).
-
-Stop the server and add a script to package.json for processing:
-
-```js
-"scripts": {
-  ...
-  "sass": "sass  scss/styles.scss app/css/styles.css --watch --source-map"
-},
-```
-
-Here's the Sass command line [documentation](https://sass-lang.com/documentation/cli/dart-sass/)
-
-To run both scripts at the same time we could use two separate terminal instances. Instead, let's edit the scripts in package.json:
-
-```js
-  "scripts": {
-    "server": "browser-sync app -w ",
-    "sass": "sass  scss/styles.scss app/css/styles.css --watch --source-map",
-    "start": "npm run server & npm run sass"
-  },
-```
-
-1. Create a `scss` folder at the top level of our repo
-2. Copy `styles.css` into it
-3. Rename `scss/styles.css` to `scss/styles.scss`.
-
-Run `npm start` (note: the word 'run' is optional when using start).
-
-Test it by re-adding the following to the top of the SASS file `styles.scss`:
-
-```css
-* {
-  color: red !important;
-}
-```
-
-Note that sass is less tolerant of errors than regular css. This is a good thing. Try omitting the full colon:
-
-```css
-* {
-  color red !important
-};
-```
-
-### SASS Variables
-
-As mentioned, Sass has its own variables system, e.g.:
-
-```css
-$basil-green: #88a308;
-$breakpoint-med: 640px;
-```
-
-Here is an example showing sass variables for breakpoints and more:
-
-Example:
-
-```css
-$break-five: 81.25em;
-// 1300px
-$break-four: 71.25em;
-// 1140
-$break-three: 61.25em;
-// 980
-$break-two: 46.25em;
-// 760
-$break-one: 22.5em;
-// 360
-
-$radius: 0.25rem;
-
-$fonts: "Source Sans Pro", Helvetica, Clean, sans-serif;
-
-$test: #00ff00;
-```
-
-Usage example:
-
-```css
-* {
-  color: $test !important;
-}
-```
-
-Add the sample SASS variables to a new file in a new `imports` folder `scss/imports/_variables.scss` and include it at the top of `styles.scss`:
-
-Note the syntax differences between a native CSS import as well as the underscore in the file name. We will come back to that later.
-
-```css
-@import "imports/variables";
-```
-
-v.s.
-
-```css
-@import url(font/stylesheet.css);
-```
-
-Test using the `$test` variable.
-
-```css
-* {
-  color: $test !important;
-}
-```
-
-Remove it.
-
-### SASS Nesting
-
-Sass will let you nest your CSS selectors in a way that mirrors the hierarchy of your HTML. Be aware that overly nested rules will result in long selectors that could prove a maintainance headache and is generally considered bad practice.
-
-Nest the header related styles in `styles.scss`:
-
-```css
-header {
-  position: relative;
-  height: 120px;
-  background: var(--basil-green);
-
-  h1 {
-    background: url(img/basil.png) no-repeat;
-    font-family: futura_stdlight, sans-serif;
-    font-weight: normal;
-    color: #fff;
-    font-size: 5rem;
-  }
-  a.beta {
-    background: url("img/burst.svg") no-repeat;
-    color: #fff;
-    font-size: 1.5rem;
-    position: absolute;
-    top: -20px;
-    right: 10px;
-    width: 85px;
-    height: 85px;
-    line-height: 85px;
-    text-align: center;
-    text-transform: uppercase;
-    transform: rotate(20deg);
-    transition: all 1s ease;
-  }
-  a.beta:hover {
-    transform: rotate(0deg) scale(1.2);
-  }
-}
-```
-
-### SASS Partials
-
-Sass partials allow you to create separate function or feature specific style sheets using [imports](https://sass-lang.com/guide#topic-4) and helps maintain a large code base.
-
-Examples [Bootstrap](https://getbootstrap.com) and its [SASS roots](https://github.com/twbs/bootstrap-sass)
-
-Create `imports/_header.scss` and cut and paste the nested header material from `_styles.scss` into it. Import it to the main stylesheet with:
-
-```css
-@import "imports/header";
-```
-
-Note the underscore in the file name. If you adding an underscore to the start of the file name is a convention that indicates a sass partial.
-
-Note: SASS allows you to use JavaScript style comments - `//`. These comments do not get compiled into the css file. Traditional CSS comments ( `/* ... */` ) do.
-
-Remove all the `nav` related CSS from `styles.scss`.
-
-Create a partial `_nav.scss` in the imports folder and cut and paste the nested nav block below into it.
-
-```css
-nav {
-  background: var(--light-gray);
-  border-top: 0.5rem solid var(--light-orange);
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-
-  ul {
-    display: flex;
-  }
-
-  li {
-    list-style: none;
-    margin-right: 0.5rem;
-  }
-
-  a {
-    text-align: center;
-    font-size: 1.5rem;
-    padding: 8px;
-    color: #fff;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-    border-radius: 6px;
-    min-width: 120px;
-    display: inline-block;
-  }
-
-  .nav-storeit a {
-    background: linear-gradient(to bottom, #fcde41 1%, #dfa910 100%);
-  }
-
-  .nav-storeit a:hover {
-    background: linear-gradient(to bottom, #dfa910 0%, #fcde41 100%);
-  }
-
-  .nav-pickit a {
-    background: linear-gradient(to bottom, #abc841 0%, #6b861e 100%);
-  }
-
-  .nav-pickit a:hover {
-    background: linear-gradient(to bottom, #6b861e 1%, #abc841 100%);
-  }
-
-  .nav-cookit a {
-    background: linear-gradient(to bottom, #6f89c7 0%, #344e8b 100%);
-  }
-
-  .nav-cookit a:hover {
-    background: linear-gradient(to bottom, #344e8b 1%, #6f89c7 100%);
-  }
-}
-```
-
-Import the partial into `styles.scss` after the other imports with:
-
-`@import 'imports/nav';`
-
-Examine the CSS in the browser's inspector. Note the mapping.
-
-One of the best things about nesting in Sass is how it allows you to organize media queries and keep them aligned with the selector.
-
-_Cut_ the body rule from the responsive section of the CSS:
-
-```css
-@media (min-width: 640px) {
-  body {
-  }
-  ...;
-}
-```
-
-and add the responsive styling to the initial body rule as shown:
-
-```css
-body {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-  line-height: 1.5;
-  color: var(--dark-gray);
-  max-width: var(--max-width);
-  margin: 0 auto;
-  margin-top: 24px;
-
-  @media (min-width: $break-two) {
-    margin: 0 auto;
-    margin-top: 1.5rem;
-    display: grid;
-    grid-template-areas:
-      "header"
-      "nav"
-      "content"
-      "footer";
-  }
-}
-```
-
-Note: since Sass is a transpiler we can use Sass variables - `$break-two` - for break points. We could not do this with CSS variables.
-
-We will use nesting for the header related CSS as well. Remove the `header` related CSS from the media query and add them to the `header` partial:
-
-```css
-header {
-  position: relative;
-  height: 120px;
-  background: var(--basil-green);
-
-  @media (min-width: $break-two) {
-    border-radius: 8px 8px 0px 0px;
-    grid-area: header;
-  }
-
-  h1 {
-    background: url(img/basil.png) no-repeat;
-    font-family: futura_stdlight, sans-serif;
-    font-weight: normal;
-    color: #fff;
-    font-size: 5rem;
-
-    @media (min-width: $break-two) {
-      padding-left: 240px;
-      padding-top: 90px;
-      transform: translate(-100px, -80px);
-      background-position: top left;
-    }
-  }
-  ...;
-}
-```
-
-<!-- - Add it to the imports folder and import it back into `styles.scss` with:
-
-`@import 'imports/header';` -->
-
-Remove the media query for the nav and add it to the partial:
-
-```css
-nav {
-  background: var(--light-gray);
-  border-top: 0.5rem solid var(--light-orange);
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-
-  @media (min-width: $break-two) {
-    grid-area: nav;
-  }
-
-  ...;
-}
-```
-
-<!-- Copy and Paste -->
-
-Finally, create partials `_base.scss` and `_content.scss`.
-
-In `_base.scss`:
-
-```css
-@import url(font/stylesheet.css);
-
-html {
-  --basil-green: #88a308;
-  --dark-gray: #333333;
-  --light-gray: #e4e1d1;
-  --light-green: #f5faef;
-  --orange: #f90;
-  --light-orange: #ebbd4e;
-  --red: #f00;
-  --max-width: 840px;
-  --breakpoint: 640px;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-}
-
-::selection {
-  background: var(--basil-green);
-  color: #fff;
-}
-
-body {
-  font: 100%/1.5 "Segoe UI", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Bitstream Vera Sans",
-    "Trebuchet MS", Verdana, "Verdana Ref", sans-serif;
-  color: var(--dark-gray);
-  max-width: var(--max-width);
-  @media (min-width: $break-two) {
-    margin: 0 auto;
-    margin-top: 1.5rem;
-    display: grid;
-    grid-template-areas:
-      "header"
-      "nav"
-      "content"
-      "footer";
-  }
-}
-
-h2,
-h3 {
-  color: var(--basil-green);
-  margin: 8px 0;
-  font-size: 1.4rem;
-  letter-spacing: -1px;
-}
-
-h2 {
-  font-size: 2rem;
-}
-
-a {
-  color: var(--orange);
-  text-decoration: none;
-  transition: color 0.5s linear;
-}
-
-li > h4 {
-  margin-top: 12px;
-}
-
-img {
-  width: 100%;
-  height: auto;
-}
-```
-
-In `_content.scss`
-
-```css
-.content {
-  @media (min-width: $break-two) {
-    grid-area: content;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-column-gap: 1rem;
-  }
-  a:hover {
-    color: var(--basil-green);
-  }
-}
-
-article {
-  padding: 1rem;
-  @media (min-width: $break-two) {
-    grid-column: span 3;
-  }
-  li {
-    margin-left: 1rem;
-    margin-bottom: 0.5rem;
-  }
-  ol {
-    margin-left: 1rem;
-    margin-bottom: 0.5rem;
-  }
-  figcaption {
-    font-size: 0.75rem;
-  }
-}
-
-aside {
-  padding: 1rem;
-  @media (min-width: $break-two) {
-    grid-column: span 2;
-    background: var(--light-green);
-    box-shadow: -4px 0px 4px #ddd;
-  }
-  li {
-    list-style: none;
-    margin-left: 1rem;
-    margin-bottom: 0.5rem;
-  }
-}
-
-footer {
-  background-color: var(--basil-green);
-  padding: 1rem;
-  border-radius: 0 0 4px 4px;
-  margin-bottom: 2rem;
-  @media (min-width: $break-two) {
-    grid-area: footer;
-  }
-}
-```
-
-And in `styles.scss` all you should need is:
-
-```css
-@import "imports/variables";
-@import "imports/base";
-@import "imports/header";
-@import "imports/nav";
-@import "imports/content";
-```
-
-Test in the browser at various sizes.
-
-Note that we get a horizontal scrollbar at a 375px width. This is due to the size of the navigation buttons.
-
-Try changing them in `_nav.scss`:
-
-```css
-a {
-  text-align: center;
-  font-size: 1.5rem;
-  padding: 8px;
-  min-width: 90px;
-  color: #fff;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-  border-radius: 6px;
-  display: inline-block;
-  @media (min-width: $break-two) {
-    min-width: 120px;
-  }
-}
-```
-
-Note: switching branches at this point will delete styles.css from the css directory. Stop the processes running in the console before switching branches.
-
-### A Note on Refactoring
-
-Once you have everything visually working and start using your template with live data you typically find issues with the design.
-
-Note `index.js` in the `js` folder and link it to `index.html`:
-
-```html
-<script src="js/index.js"></script>
-```
-
-```js
-var API = "https://ron-swanson-quotes.herokuapp.com/v2/quotes";
-
-fetch(API)
-  .then(function (response) {
-    return response.json();
-  })
-  .then(function (data) {
-    document.querySelector(".quote").innerText = data[0];
-  });
-```
-
-Add class "quote" to the lone paragraph in the navigation. Use `aria-live="polite"`
+This can be very useful in conjunction with breakpoints for responsively laying out complex pages.
 
 ## JavaScript
 
@@ -1480,13 +975,11 @@ function makeBasil() {
 console.log(makeBasil());
 ```
 
-Here is the above without relying on the node module:
+Here is the same random number generation above without relying on the installed node module:
 
 ```js
 function random() {
   const max = 3;
-  // const randomIndex = Math.random();
-  // const randomIndex = Math.random() * max;
   const randomIndex = Math.floor(Math.random() * max);
   return randomIndex;
 }
@@ -1587,10 +1080,10 @@ var recipeName = `${random(basilChefs)}'s ${random(basilTexture)} pesto`;
 el.innerHTML = recipeName;
 ```
 
-and add it to the article block it in `_content.scss`:
+and add CSS:
 
 ```css
-h2 {
+article h2 {
   font-size: 2rem;
   text-transform: capitalize;
 }
@@ -1621,7 +1114,7 @@ Create `_modal.scss` and add it to `styles.scss` (e.g. `@import 'imports/modal';
   position: fixed;
   top: 30%;
   left: calc(50% - 150px);
-  // display: none;
+  /* display: none; */
 }
 ```
 
@@ -1765,14 +1258,14 @@ Style it:
 ```css
 .modal-outer {
   display: grid;
+  justify-content: center;
+  align-items: center;
   background: rgba(0, 0, 0, 0.5);
   position: fixed;
   height: 100vh;
   width: 100vw;
   top: 0;
   left: 0;
-  justify-content: center;
-  align-items: center;
   /* Hide this until we need it */
   opacity: 0;
   pointer-events: none;
@@ -1802,7 +1295,7 @@ function showPopover(event) {
 document.addEventListener("click", showPopover);
 ```
 
-Now the modal wrapper will show when the button is clicked - but the modal will not.
+Now the modal wrapper will show when the button is clicked - but the modal will not. (Toggle the opacity on the outer div to see the modal.)
 
 Edit styles for the interior modal:
 
@@ -1820,7 +1313,24 @@ Edit styles for the interior modal:
 }
 ```
 
-Add a transform that depends on the modal outer classes:
+Note: we are removing the following properties from the inner modal:
+
+```css
+position: fixed;
+top: 30%;
+left: calc(50% - 150px);
+display: none;
+```
+
+Remove the generic open CSS rule:
+
+```css
+/* .open {
+  display: block;
+} */
+```
+
+and replace it with a transform that selects the modal via the outer modal's class:
 
 ```css
 .modal-outer.open .modal {
@@ -1907,6 +1417,8 @@ document.addEventListener("click", showPopover);
 ```
 
 Note the use of [closest](https://gomakethings.com/checking-event-target-selectors-with-event-bubbling-in-vanilla-javascript/) above. The `closest()` method looks for the closest matching parent to an element that has a selector that you pass in.
+
+## END of Exercise
 
 ## Notes
 
