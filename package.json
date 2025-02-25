@@ -1,0 +1,14 @@
+{
+  "name": "basilica",
+  "version": "1.0.0",
+  "description": "a recipe",
+  "main": "index.js",
+  "scripts": {
+    "start": "browser-sync app -w"
+  },
+  "author": "Daniel Deverell",
+  "license": "ISC",
+  "dependencies": {
+    "browser-sync": "^3.0.3"
+  }
+}
