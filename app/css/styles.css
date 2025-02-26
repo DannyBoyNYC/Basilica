@@ -189,7 +189,7 @@ footer {
   margin-bottom: 2rem;
 }
 
-@media (width > 640px) {
+/* @media (width > 640px) {
   .content {
     display: flex;
   }
@@ -199,5 +199,38 @@ footer {
   aside {
     background: var(--light-green);
     box-shadow: -4px 0px 4px #ddd;
+  }
+} */
+@media (width > 600px) {
+  body {
+    display: grid;
+    grid-template-areas:
+      "header"
+      "nav"
+      "content"
+      "footer";
+  }
+  header {
+    grid-area: header;
+  }
+  nav {
+    grid-area: nav;
+  }
+  .content {
+    grid-area: content;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-column-gap: 1rem;
+  }
+  article {
+    grid-column: span 3;
+  }
+  aside {
+    grid-column: span 2;
+    background: var(--light-green);
+    box-shadow: -4px 0px 4px #ddd;
+  }
+  footer {
+    grid-area: footer;
   }
 }
